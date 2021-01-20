@@ -58,6 +58,12 @@ async def info(ctx, *paire):
     sales_last_72_hours = []
     sales_last_72_hours_bool = 0
 
+    lowest_ask_flow = []
+    lowest_ask_flow_bool = 0
+
+    image = []
+    image_bool = 0
+
     for word in splitted:
         i += 1
         if (i < 50_000):
@@ -93,20 +99,77 @@ async def info(ctx, *paire):
                 sales_last_72_hours_bool = 1
                 sales_last_72_hours.append(word)
 
+            if ("lowestAskFloat" in word and lowest_ask_flow_bool == 0):
+                lowest_ask_flow_bool = 1
+                lowest_ask_flow.append(word)
 
-    print ("last sale = ", last_sale)
-    print ("change_value= ", change_value)
-    print(change_percentage)
-    print(stock_sold)
-    print(price_premium)
-    print(sales_last_72_hours)
+            if ("media" in word):
+                image_bool += 1
+                if (image_bool == 40):
+                    image.append(word)
 
-    await ctx.send(last_sale)
-    await ctx.send(change_value)
-    await ctx.send(change_percentage)
-    await ctx.send(stock_sold)
-    await ctx.send(price_premium)
-    await ctx.send(sales_last_72_hours)
+
+
+
+
+
+    last_sale = last_sale[0]
+    last_sale = last_sale.split(':')
+    last_sale = last_sale[1]
+
+    change_value = change_value[0]
+    change_value = change_value.split(':')
+    change_value = change_value[1]
+
+    change_percentage = change_percentage[0]
+    change_percentage = change_percentage.split(':')
+    change_percentage = change_percentage[1]
+
+    stock_sold = stock_sold[0]
+    stock_sold = stock_sold.split(':')
+    stock_sold = stock_sold[1]
+
+    price_premium = price_premium[0]
+    price_premium = price_premium.split(':')
+    price_premium = price_premium[1]
+    price_premium = float(price_premium) * 100
+
+    sales_last_72_hours = sales_last_72_hours[0]
+    sales_last_72_hours = sales_last_72_hours.split(':')
+    sales_last_72_hours = sales_last_72_hours[1]
+
+    lowest_ask_flow = lowest_ask_flow[0]
+    lowest_ask_flow = lowest_ask_flow.split(':')
+    lowest_ask_flow = lowest_ask_flow[1]
+
+    image = image[0]
+    image = image.split('"')
+    image =  (image[5])
+
+    
+    # await ctx.send(last_sale)
+    # await ctx.send(change_value)
+    # await ctx.send(change_percentage)
+    # await ctx.send(stock_sold)
+    # await ctx.send(price_premium)
+    # await ctx.send(sales_last_72_hours)
+    place = ""
+
+
+    embed = discord.Embed(title = paire, color=0x2C75FF)
+    embed.set_thumbnail(url= image)
+    embed.set_image(url= image)
+
+    embed.add_field(name = "Prix moyen", value = lowest_ask_flow + " $US", inline = False)
+    embed.add_field(name = "Derniere vente:", value = last_sale + " euros", inline = False)
+    embed.add_field(name = "Change Value:", value = change_value + "%", inline = False)
+    embed.add_field(name = "Nombres de paires vendues", value = stock_sold + " ventes", inline = False)
+    embed.add_field(name = "Plus value", value = str(price_premium) + "%",  inline = False)
+    embed.add_field(name = "Nombres de ventes ces derniers 3 jours", value = sales_last_72_hours + " ventes", inline = False)
+    embed.add_field(name = '\u200b', value = '\u200b' , inline = False)
+
+
+    await ctx.channel.send(embed=embed)
 
 
 
