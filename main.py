@@ -2,8 +2,12 @@ import discord
 from discord.ext import commands
 import urllib.request
 import requests
+import asyncio
+
 
 import os
+from datetime import datetime
+import threading
 
 
 
@@ -12,6 +16,18 @@ bot = commands.Bot(command_prefix ="!", description = "yoloooooooooooooooooooooo
 @bot.event
 async def on_ready():
     print("prêt!")
+
+
+async def my_task(ctx, username):
+    while True:
+        await ctx.send("tic tac boum")
+        await asyncio.sleep(3)
+
+@bot.command()
+async def infoo(ctx, username):
+    bot.loop.create_task(my_task(ctx, username))
+
+
 
 @bot.command()
 async def coucou(ctx):
@@ -144,7 +160,8 @@ async def info(ctx, *paire):
 
     image = image[0]
     image = image.split('"')
-    image =  (image[5])
+    print (image)
+    # image =  (image[5])
 
     
     # await ctx.send(last_sale)
@@ -189,5 +206,5 @@ async def info(ctx, *paire):
      
 
 
-bot.run("TOKEN")
+bot.run("ODAwMzQ3OTI2MjQwNDI4MDQz.YAQ0Fw.8D30CQcjZiZXcUKhk2OUoguXSjk")
 
