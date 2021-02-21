@@ -11,6 +11,7 @@ import threading
 
 
 
+
 bot = commands.Bot(command_prefix ="!", description = "yolooooooooooooooooooooooooooooo")
 
 @bot.event
