@@ -8,7 +8,7 @@ import asyncio
 import os
 from datetime import datetime
 import threading
-
+from datetime import datetime
 
 shooes_list = []
 
@@ -18,16 +18,45 @@ bot = commands.Bot(command_prefix ="!", description = "yoloooooooooooooooooooooo
 async def on_ready():
     print("prêt!")
 
+go = True
 
 async def my_task(ctx, username):
-    while True:
-        await ctx.send("tic tac boum")
-        await asyncio.sleep(3)
+    while go == True:
+        # await ctx.send("tic tac boum")
+
+        now = datetime.now().time() # time object
+
+        date = str(now)
+        date = (date[:-7])
+        
+        if (date == "09:00:00"):
+                try:
+                    i = shooes_list[0]
+                    for j in range(len(shooes_list)):
+                        title = "k"
+                        paire = shooes_list[j]
+                        number = int(j) + 1
+                        
+                        embed = discord.Embed(title = "paire numéro " + str(number), color=0x2C75FF)
+                        embed.add_field(name = "paire " + str(number), value = paire, inline = True)
+
+                        await ctx.send(embed = embed)
+                except Exception:
+                    await ctx.send("Aucun élément n'a encore été ajouté, pensez a ajouter une paire avec la commande !add(paire)")
+
+
+        await asyncio.sleep(1)
+
 
 @bot.command()
 async def infoo(ctx, username):
     bot.loop.create_task(my_task(ctx, username))
 
+@bot.command()
+async def stop(ctx):
+    #ici
+    #want to stop this fcking function
+    print("alaid")
 
 
 @bot.command()
@@ -59,7 +88,7 @@ async def show_list(ctx):
     try:
         i = shooes_list[0]
         for j in range(len(shooes_list)):
-            title = "Counters"
+            title = "k"
             paire = shooes_list[j]
             number = int(j) + 1
             
@@ -241,5 +270,5 @@ async def info(ctx, *paire):
 
 
 
-bot.run("ODAwMzQ3OTI2MjQwNDI4MDQz.YAQ0Fw.WPyJ4nqsb1dIUFAnxgJZ70HGq-k")
+bot.run("ODAwMzQ3OTI2MjQwNDI4MDQz.YAQ0Fw.pcxQtt2AfZHAjf9Vyz-rJvLZ0g0")
 
