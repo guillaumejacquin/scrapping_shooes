@@ -10,7 +10,7 @@ from datetime import datetime
 import threading
 
 
-
+shooes_list = []
 
 bot = commands.Bot(command_prefix ="!", description = "yolooooooooooooooooooooooooooooo")
 
@@ -35,6 +35,60 @@ async def coucou(ctx):
     await ctx.send("yo c est le test")
 
 #on peut faire taille par taille normalement si besoin
+
+
+@bot.command()
+async def add(ctx, *paire):
+    paire = "".join(paire)
+    paire = str(paire)
+    string = "\n**" + paire + "** a bien été ajoutée à la liste.\n si vous voulez consulter la liste, tapez !show_list. \n si vous voulez supprimer un élement tapez !remove_shooes(paire)"
+    await ctx.send(string)
+    shooes_list.append(paire)
+    await ctx.send(shooes_list)
+    embed = discord.Embed(title = "Une nouvelle paire a ete ajoutée!", color=0x2C75FF)
+    # embed.set_thumbnail(url= image)
+    # embed.set_image(url= image)
+
+    embed.add_field(name = "nouvel element ajouté", value = string , inline = False)
+    await ctx.channel.send(embed=embed)
+
+
+    
+@bot.command()
+async def show_list(ctx): 
+    try:
+        i = shooes_list[0]
+        for j in range(len(shooes_list)):
+            title = "Counters"
+            paire = shooes_list[j]
+            number = int(j) + 1
+            
+            embed = discord.Embed(title = "paire numéro " + str(number), color=0x2C75FF)
+            embed.add_field(name = "paire " + str(number), value = paire, inline = True)
+
+            await ctx.send(embed = embed)
+    except Exception:
+        await ctx.send("Aucun élément n'a encore été ajouté, pensez a ajouter une paire avec la commande !add(paire)")
+
+@bot.command()
+async def remove(ctx, *paire):
+    paire = "".join(paire)
+    remove = []
+
+    for j in shooes_list:
+        if (str(paire) == j):
+            remove.append(j)
+            break
+
+    if (len(remove) == 0):
+        await (ctx.send("La paire que vous indiquez n'est pas dans la liste"))
+        return(0)
+
+
+    shooes_list.remove(j)
+    await ctx.send("La paire **" + paire + "** a bien été supprimée")
+
+
 @bot.command()
 async def info(ctx, *paire):
     paire = "-".join(paire)
@@ -159,24 +213,18 @@ async def info(ctx, *paire):
     lowest_ask_flow = lowest_ask_flow.split(':')
     lowest_ask_flow = lowest_ask_flow[1]
 
-    image = image[0]
-    image = image.split('"')
-    print (image)
-    # image =  (image[5])
+    # image = image[0]
+    # image = image.split('"')
+    # print (image)
+    # # image =  (image[5])
 
     
-    # await ctx.send(last_sale)
-    # await ctx.send(change_value)
-    # await ctx.send(change_percentage)
-    # await ctx.send(stock_sold)
-    # await ctx.send(price_premium)
-    # await ctx.send(sales_last_72_hours)
     place = ""
 
 
     embed = discord.Embed(title = paire, color=0x2C75FF)
-    embed.set_thumbnail(url= image)
-    embed.set_image(url= image)
+    # embed.set_thumbnail(url= image)
+    # embed.set_image(url= image)
 
     embed.add_field(name = "Prix moyen", value = lowest_ask_flow + " $US", inline = False)
     embed.add_field(name = "Derniere vente:", value = last_sale + " euros", inline = False)
@@ -193,19 +241,5 @@ async def info(ctx, *paire):
 
 
 
-    #print("lowestAsk = ", lowest_ask)
-    #print("highestBid = ", highest_Bid)
-
-    # with urllib.request.urlopen(url) as response:
-    #     texte = response.read()
-
-    # poste_string = str(texte)
-    # splitted = poste_string.split()
-
-    # for word in splitted:
-    #     print (word)
-     
-
-
-bot.run("ODAwMzQ3OTI2MjQwNDI4MDQz.YAQ0Fw.8D30CQcjZiZXcUKhk2OUoguXSjk")
+bot.run("ODAwMzQ3OTI2MjQwNDI4MDQz.YAQ0Fw.WPyJ4nqsb1dIUFAnxgJZ70HGq-k")
 
